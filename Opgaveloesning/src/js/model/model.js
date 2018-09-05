@@ -1,7 +1,13 @@
+//ToDo:
+//addItem må IKKE kunne tage imod en value som er en string. Det ødelægger calculateTotal, fordi så plusser den et tal + string.
+//Generelt fix input validering
+//Try Catch'es i hele opgaven. Undersøg lige kort, og se om det er for indviklet.
+
 class Budget {
     constructor () {
 
     }
+
 
     //Adds to Expense or Income
     addItem (type, desc, value) {
@@ -34,6 +40,35 @@ class Budget {
 
     // }
 
+    calculateBudget () {
+        let totalIncome = this.calculateTotal('income');
+        let totalExpenses = this.calculateTotal('expense');
+
+        let balance = totalIncome - totalExpenses;
+        console.log('Balance: ' + balance);
+    }
+
+    calculateTotal (type) {
+        let total = 0;
+
+        if (type === 'income') {
+            allItems.income.forEach(function (element) {
+                total += element.value;
+            });
+
+            return total;
+        }
+        else if (type === 'expense') {
+            allItems.expense.forEach(function (element) {
+                total += element.value;
+            });
+
+            return total;
+        }
+        else {
+            console.log('Fejl i typen!');
+        }
+    }
 };
 
 
