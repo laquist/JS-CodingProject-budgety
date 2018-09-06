@@ -2,6 +2,12 @@
 //addItem må IKKE kunne tage imod en value som er en string. Det ødelægger calculateTotal, fordi så plusser den et tal + string.
 //Generelt fix input validering
 //Try Catch'es i hele opgaven. Undersøg lige kort, og se om det er for indviklet.
+//Tror ikke at model skal ikke console.log nogensinde. Den har intet med view/console at gøre. Den skal vel returne en string med fejl f.eks.
+//Fix diverse responses, om tingene sker successfully, og ellers returner at der var en fejl.
+//Lav en DOMStrings samling, med de class names jeg skal bruge? I stedet for document.getElementByClassname - hver gang
+//Procent skal kun vise 2 decimaler. Den må ikke kunne vise 8-9 decimaler..
+
+
 
 class Budget {
     constructor () {
@@ -22,14 +28,18 @@ class Budget {
             ID = 1;
         }
 
-
+        //
         if (type === 'income') {
             item = new Income(ID, desc, value);
             allItems.income.push(item);
+
+            return item;
         }
         else if (type === 'expense') {
-            item = new Expense(ID, desc, value);
+            item = new Expense(ID, desc, value, Expense.calcPercentage(value, this.calculateTotal('income')));
             allItems.expense.push(item);
+            
+            return item;
         }
         else {
             console.log('Fejl i typen!');
@@ -46,6 +56,8 @@ class Budget {
 
         let balance = totalIncome - totalExpenses;
         console.log('Balance: ' + balance);
+
+        //return et object med totalIncome, totalExpenses, balance?
     }
 
     calculateTotal (type) {
@@ -69,14 +81,23 @@ class Budget {
             console.log('Fejl i typen!');
         }
     }
+
+    getBudget () {
+        //kalder calculateBudget
+    }
 };
 
 
 class Expense {
-    constructor (id, desc, value) {
+    constructor (id, desc, value, percentage) {
         this.id = id;
         this.desc = desc;
         this.value = value;
+        this.percentage = percentage;
+    }
+
+    static calcPercentage (value, totalIncome) {       
+        return value / (totalIncome / 100);
     }
 };
 
