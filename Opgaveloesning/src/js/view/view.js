@@ -1,7 +1,4 @@
 class View {
-    constructor () {
-
-    }
 
     getInfo () {
         let info = {
@@ -60,4 +57,12 @@ class View {
     displayBudget () {
 
     }
+
+    getDOMstrings () {
+        
+    }
 }
+
+let DOMstrings = {
+
+};

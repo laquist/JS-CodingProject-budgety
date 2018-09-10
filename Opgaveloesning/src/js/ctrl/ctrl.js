@@ -3,9 +3,6 @@ let myView;
 
 //Lav alle metoder inde i controlleren static. Jeg behøver ikke en controller instans, da den bare bruges som en container (at det giver overblik, og bedre syntax imo)
 class Controller {
-    constructor () {
-
-    }
 
     static initialize () {
         //Creates budget instance
@@ -21,11 +18,16 @@ class Controller {
     }
 
     static setupEventListeners () {
+        //
         let buttonElement = document.getElementsByClassName('add__btn')[0];
         buttonElement.addEventListener('click', function () {
             Controller.ctrlAddItem();
         });
 
+        //
+        myView.getDOMstrings();
+
+        //
         console.log('EventListeners initialized!');
     }
 
@@ -62,12 +64,6 @@ class Controller {
         //kalder myBudget.getBudget();
         //kalder view.displayBudget();
     }
-
-    
-
-    // static tempFunc () {
-    //     console.log('Hurra!');
-    // }
 }
 
 //
