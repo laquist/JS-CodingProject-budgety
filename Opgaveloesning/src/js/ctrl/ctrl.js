@@ -66,8 +66,19 @@ class Controller {
     }
 
     static ctrlDeleteItem () {
-
+        console.log('Hi!');
     }
+
+    // static testEvent () {
+    //     let DOM = myView.getDOMstrings();
+
+    //     let deleteButtonElements = document.querySelectorAll(DOM.itemDelete);
+    //     deleteButtonElements.forEach(function (element) {
+    //         element.addEventListener('click', function () {
+    //             Controller.ctrlDeleteItem();
+    //         })
+    //     });
+    // }
 
     static setupEventListeners () {
         //Gets DOM strings
@@ -77,6 +88,14 @@ class Controller {
         let buttonElement = document.querySelector(DOM.inputBtn);
         buttonElement.addEventListener('click', function () {
             Controller.ctrlAddItem();
+        });
+
+        //Adds eventlistener to the delete buttons for all elements
+        let deleteButtonElements = document.querySelectorAll(DOM.itemDelete);
+        deleteButtonElements.forEach(function (element) {
+            element.addEventListener('click', function () {
+                Controller.ctrlDeleteItem();
+            })
         });
     }
 
@@ -99,6 +118,9 @@ class Controller {
                 percentage: -1
             }
         );
+
+        //Displays month
+        myView.displayMonth();
     }
 }
 
@@ -108,3 +130,6 @@ Controller.createTestData();
 //Temp - til at update budget, nu når jeg har testdata, så felterne ikke starter på 0
 Controller.updateBudget();
 Controller.updatePercentages();
+
+//TEMP - Skal kalde denne igen. Den bliver kaldt i initialize, men fordi jeg opretter min testData EFTER, så får de ikke added eventlisteners
+Controller.setupEventListeners();

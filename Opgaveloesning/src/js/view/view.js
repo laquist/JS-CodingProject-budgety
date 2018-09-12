@@ -55,7 +55,9 @@ class View {
     }
 
     clearFields() {
-
+        document.querySelector(DOMstrings.inputType).value = 'income';
+        document.querySelector(DOMstrings.inputDescription).value = '';
+        document.querySelector(DOMstrings.inputValue).value = '';
     }
 
     displayBudget (infoObj) {
@@ -72,14 +74,25 @@ class View {
         document.querySelector(DOMstrings.percentageLabel).textContent = infoObj.percentage + '%';
     }
 
-    formatNumber () {
+    formatNumber (number, type) {
         /*
-            + or - before number
-            exactly 2 decimal points
-            comma separating the thousands
-            2310.4567 -> + 2,310.46
-            2000 -> + 2,000.00
+        + or - before number
+        exactly 2 decimal points
+        comma separating the thousands
+        2310.4567 -> + 2,310.46
+        2000 -> + 2,000.00
         */
+       
+        let numberString = '';
+
+        if (type === 'income') {
+            numberString = '+ ' + numberString;
+        }
+        else if (type === 'expense') {
+            numberString = '- ' + numberString;
+        }
+
+        return numberString;
     }
 
     displayPercentages (percentArr) {
@@ -102,8 +115,27 @@ class View {
         return DOMstrings;
     }
 
-    displayMonth() {
+    displayMonth() { 
+        let months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
 
+        let date = new Date();
+        let currentMonth = months[date.getMonth()];
+        
+        //Updates the html element with month string
+        document.querySelector(DOMstrings.dateLabel).textContent = currentMonth;
     }
 }
 
@@ -120,5 +152,6 @@ let DOMstrings = {
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
     expensesPercLabel: '.item__percentage',
-    dateLabel: '.budget__title--month'
+    dateLabel: '.budget__title--month',
+    itemDelete: '.item__delete--btn'
 };
