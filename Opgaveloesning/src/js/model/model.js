@@ -4,10 +4,8 @@
 //Try Catch'es i hele opgaven. Undersøg lige kort, og se om det er for indviklet.
 //Tror ikke at model skal ikke console.log nogensinde. Den har intet med view/console at gøre. Den skal vel returne en string med fejl f.eks.
 //Fix diverse responses, om tingene sker successfully, og ellers returner at der var en fejl.
-//Lav en DOMStrings samling, med de class names jeg skal bruge? I stedet for document.getElementByClassname - hver gang
 //Procent skal kun vise 2 decimaler. Den må ikke kunne vise 8-9 decimaler..
 //Skriv comments i hele coden!
-//Udfyld DOMstrings i view.js, og brug den til at gemme class navne, i stedet for getElementByClassName hver gang
 
 class Budget {
 
@@ -93,8 +91,13 @@ class Budget {
     }
 
     getPercentages () {
-        //Husk at 'get' metoder ikke skal calculate, men bare returne. Seperation of Concerns.
+        let percentArr = [];
 
+        data.allItems.expense.forEach(function (element) {
+            percentArr.push(element.percentage)
+        });
+
+        return percentArr;
     }
 
     deleteItem(type, id) {
@@ -111,7 +114,12 @@ class Expense {
     }
 
     calculatePercentage () {
-        this.percentage = Math.round(this.value / (data.totals.income / 100));
+        //Denne udregner hvor mange procent denne expense er ud af Total Income
+        // this.percentage = Math.round(this.value / (data.totals.income / 100));
+
+
+        //Denne udregner hvor mange procent denne expense er ud af alle vores expenses.
+        this.percentage = Math.round(this.value / (data.totals.expense / 100));
     }
 };
 

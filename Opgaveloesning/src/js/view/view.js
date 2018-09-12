@@ -2,9 +2,9 @@ class View {
 
     getInfo () {
         let info = {
-            type: document.getElementsByClassName('add__type')[0].value,
-            desc: document.getElementsByClassName('add__description')[0].value,
-            value: parseInt(document.getElementsByClassName('add__value')[0].value)
+            type: document.querySelector(DOMstrings.inputType).value,
+            desc: document.querySelector(DOMstrings.inputDescription).value,
+            value: parseInt(document.querySelector(DOMstrings.inputValue).value)
         };
 
         return info;
@@ -16,7 +16,7 @@ class View {
         let docElement;
 
         if (type === "income") {
-            docElement = document.getElementsByClassName('income__list')[0];
+            docElement = document.querySelector(DOMstrings.incomeContainer);
             html = `
             <div class="item clearfix" id="income-${obj.id}">
                 <div class="item__description">${obj.desc}</div>
@@ -30,13 +30,13 @@ class View {
             `;
         }
         else if (type === "expense") {
-            docElement = document.getElementsByClassName('expenses__list')[0];
+            docElement = document.querySelector(DOMstrings.expensesContainer);
             html = `
             <div class="item clearfix" id="expense-${obj.id}">
                 <div class="item__description">${obj.desc}</div>
                 <div class="right clearfix">
                     <div class="item__value">- ${obj.value}</div>
-                    <div class="item__percentage">${obj.percentage}%</div>
+                    <div class="item__percentage">-1%</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                     </div>
@@ -54,15 +54,71 @@ class View {
         }
     }
 
-    displayBudget () {
+    clearFields() {
+
+    }
+
+    displayBudget (infoObj) {
+        //Opdatere month?
+        
+        //Updates balance
+        document.querySelector(DOMstrings.budgetLabel).textContent = infoObj.balance;
+        
+        //Updates Total income and Total expenses
+        document.querySelector(DOMstrings.incomeLabel).textContent = infoObj.totalIncome;
+        document.querySelector(DOMstrings.expensesLabel).textContent = infoObj.totalExpense;
+
+        //Updates Expenses percent label
+        document.querySelector(DOMstrings.percentageLabel).textContent = infoObj.percentage + '%';
+    }
+
+    formatNumber () {
+        /*
+            + or - before number
+            exactly 2 decimal points
+            comma separating the thousands
+            2310.4567 -> + 2,310.46
+            2000 -> + 2,000.00
+        */
+    }
+
+    displayPercentages (percentArr) {
+        let percLabels = document.querySelectorAll(DOMstrings.expensesPercLabel);
+        
+        for (let i = 0; i < percLabels.length; i++) {
+            percLabels[i].textContent = percentArr[i] + '%';
+        }
+    }
+
+    deleteListItem () {
+
+    }
+
+    changedType() {
 
     }
 
     getDOMstrings () {
-        
+        return DOMstrings;
+    }
+
+    displayMonth() {
+
     }
 }
 
 let DOMstrings = {
-
+    inputType: '.add__type',
+    inputDescription: '.add__description',
+    inputValue: '.add__value',
+    inputBtn: '.add__btn',
+    incomeContainer: '.income__list',
+    expensesContainer: '.expenses__list',
+    budgetLabel: '.budget__value',
+    incomeLabel: '.budget__income--value',
+    expensesLabel: '.budget__expenses--value',
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container',
+    expensesPercLabel: '.item__percentage',
+    dateLabel: '.budget__title--month'
 };
