@@ -101,7 +101,26 @@ class Budget {
     }
 
     deleteItem(type, id) {
+        if (type === 'income') {
+            data.allItems.income.forEach(function (element) {
+                if (element.id === id) {
+                    let index = data.allItems.income.indexOf(element);
+                    data.allItems.income.splice(index, 1);
 
+                    console.log('Test - Income delete success');
+                }
+            });
+        }
+        else if (type === 'expense') {
+            data.allItems.expense.forEach(function (element) {
+                if (element.id === id) {
+                    let index = data.allItems.expense.indexOf(element);
+                    data.allItems.expense.splice(index, 1);
+
+                    console.log('Test - Expense delete success');
+                }
+            });
+        }
     }
 };
 

@@ -65,37 +65,49 @@ class Controller {
         myView.displayPercentages(percentArr);
     }
 
-    static ctrlDeleteItem () {
-        console.log('Hi!');
+    static ctrlDeleteItem (type, id) {
+        myBudget.deleteItem(type, id);
+        myView.deleteListItem(); // ARGS?
+
+        console.log('Test - ctrlDeleteItem called');
     }
-
-    // static testEvent () {
-    //     let DOM = myView.getDOMstrings();
-
-    //     let deleteButtonElements = document.querySelectorAll(DOM.itemDelete);
-    //     deleteButtonElements.forEach(function (element) {
-    //         element.addEventListener('click', function () {
-    //             Controller.ctrlDeleteItem();
-    //         })
-    //     });
-    // }
 
     static setupEventListeners () {
         //Gets DOM strings
         let DOM = myView.getDOMstrings();
 
         //Adds eventlistener to the apply button, next to input fields
-        let buttonElement = document.querySelector(DOM.inputBtn);
-        buttonElement.addEventListener('click', function () {
+        document.querySelector(DOM.inputBtn).addEventListener('click', function () {
             Controller.ctrlAddItem();
         });
 
         //Adds eventlistener to the delete buttons for all elements
-        let deleteButtonElements = document.querySelectorAll(DOM.itemDelete);
-        deleteButtonElements.forEach(function (element) {
-            element.addEventListener('click', function () {
-                Controller.ctrlDeleteItem();
-            })
+        document.querySelector(DOM.container).addEventListener('click', function () {
+            let id;
+            let targetIDsplit;
+
+            //Find out if the 5th parent element is income__list or expenses__list
+            let parentElement = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+            //Finds the 4th parent elements ID (example: income-1)
+            let targetIDstring = event.target.parentElement.parentElement.parentElement.parentElement.id;
+
+            if (parentElement.classList.contains('income__list')) {
+                //Converts the html id="" tag, to id number
+                targetIDsplit = targetIDstring.split('-');
+                id = parseInt(targetIDsplit[1]);
+
+                //
+                Controller.ctrlDeleteItem('income', id);
+            }
+            else if (parentElement.classList.contains('expenses__list')) {
+                //Converts the html id="" tag, to id number
+                targetIDsplit = targetIDstring.split('-');
+                id = parseInt(targetIDsplit[1]);
+
+                //
+                Controller.ctrlDeleteItem('expense', id);
+            }
         });
     }
 
@@ -132,4 +144,4 @@ Controller.updateBudget();
 Controller.updatePercentages();
 
 //TEMP - Skal kalde denne igen. Den bliver kaldt i initialize, men fordi jeg opretter min testData EFTER, så får de ikke added eventlisteners
-Controller.setupEventListeners();
+// Controller.setupEventListeners();
