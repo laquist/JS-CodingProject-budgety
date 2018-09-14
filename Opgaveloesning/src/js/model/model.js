@@ -1,11 +1,5 @@
 //ToDo:
-//addItem må IKKE kunne tage imod en value som er en string. Det ødelægger calculateTotal, fordi så plusser den et tal + string.
-//Generelt fix input validering
-//Try Catch'es i hele opgaven. Undersøg lige kort, og se om det er for indviklet.
-//Tror ikke at model skal ikke console.log nogensinde. Den har intet med view/console at gøre. Den skal vel returne en string med fejl f.eks.
-//Fix diverse responses, om tingene sker successfully, og ellers returner at der var en fejl.
-//Procent skal kun vise 2 decimaler. Den må ikke kunne vise 8-9 decimaler..
-//Skriv comments i hele coden!
+
 
 class Budget {
 
@@ -106,8 +100,6 @@ class Budget {
                 if (element.id === id) {
                     let index = data.allItems.income.indexOf(element);
                     data.allItems.income.splice(index, 1);
-
-                    console.log('Test - Income delete success');
                 }
             });
         }
@@ -116,8 +108,6 @@ class Budget {
                 if (element.id === id) {
                     let index = data.allItems.expense.indexOf(element);
                     data.allItems.expense.splice(index, 1);
-
-                    console.log('Test - Expense delete success');
                 }
             });
         }

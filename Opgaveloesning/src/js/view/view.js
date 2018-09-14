@@ -15,13 +15,15 @@ class View {
         let html;
         let docElement;
 
+        let formatedValue = myView.formatNumber(obj.value);
+
         if (type === "income") {
             docElement = document.querySelector(DOMstrings.incomeContainer);
             html = `
             <div class="item clearfix" id="income-${obj.id}">
                 <div class="item__description">${obj.desc}</div>
                 <div class="right clearfix">
-                    <div class="item__value">+ ${obj.value}</div>
+                    <div class="item__value">+ ${formatedValue}</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                     </div>
@@ -35,7 +37,7 @@ class View {
             <div class="item clearfix" id="expense-${obj.id}">
                 <div class="item__description">${obj.desc}</div>
                 <div class="right clearfix">
-                    <div class="item__value">- ${obj.value}</div>
+                    <div class="item__value">- ${formatedValue}</div>
                     <div class="item__percentage">-1%</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
@@ -54,21 +56,19 @@ class View {
         }
     }
 
-    clearFields() {
+    clearFields () {
         document.querySelector(DOMstrings.inputType).value = 'income';
         document.querySelector(DOMstrings.inputDescription).value = '';
         document.querySelector(DOMstrings.inputValue).value = '';
     }
 
-    displayBudget (infoObj) {
-        //Opdatere month?
-        
+    displayBudget (infoObj) {      
         //Updates balance
-        document.querySelector(DOMstrings.budgetLabel).textContent = infoObj.balance;
+        document.querySelector(DOMstrings.budgetLabel).textContent = myView.formatNumber(infoObj.balance);
         
         //Updates Total income and Total expenses
-        document.querySelector(DOMstrings.incomeLabel).textContent = infoObj.totalIncome;
-        document.querySelector(DOMstrings.expensesLabel).textContent = infoObj.totalExpense;
+        document.querySelector(DOMstrings.incomeLabel).textContent = myView.formatNumber(infoObj.totalIncome);
+        document.querySelector(DOMstrings.expensesLabel).textContent = myView.formatNumber(infoObj.totalExpense);
 
         //Updates Expenses percent label
         document.querySelector(DOMstrings.percentageLabel).textContent = infoObj.percentage + '%';
@@ -83,8 +83,10 @@ class View {
         2000 -> + 2,000.00
         */
        
-        let numberString = '';
+        //Gives the comma and dot format
+        let numberString = number.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});;
 
+        //Adds plus or minus to the string
         if (type === 'income') {
             numberString = '+ ' + numberString;
         }
@@ -103,19 +105,43 @@ class View {
         }
     }
 
-    deleteListItem () {
+    deleteListItem (type, id) {
+        let parentElement;
+        let childToDelete;
 
+        //Sets parentElement
+        if (type === 'income') {
+            parentElement = document.querySelector(DOMstrings.incomeContainer);
+        }
+        else if (type === 'expense') {
+            parentElement = document.querySelector(DOMstrings.expensesContainer);
+        }
+
+        //Sets the element to delete
+        childToDelete = document.querySelector('#' + type + '-' + id);
+
+        //Deletes element
+        parentElement.removeChild(childToDelete);
     }
 
-    changedType() {
+    changedType () {
+        let fields = document.querySelectorAll(
+            DOMstrings.inputType + ',' + 
+            DOMstrings.inputDescription + ',' + 
+            DOMstrings.inputValue);
 
+        fields.forEach(function (element) {
+            element.classList.toggle('red-focus');
+        });
+
+        document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
     }
 
     getDOMstrings () {
         return DOMstrings;
     }
 
-    displayMonth() { 
+    displayMonth () { 
         let months = [
             'January',
             'February',

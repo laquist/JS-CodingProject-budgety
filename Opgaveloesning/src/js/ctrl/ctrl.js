@@ -1,7 +1,6 @@
 let myBudget;
 let myView;
 
-//Lav alle metoder inde i controlleren static. Jeg behøver ikke en controller instans, da den bare bruges som en container (at det giver overblik, og bedre syntax imo)
 class Controller {
     //TEMP METODE
     static createTestData () {
@@ -30,17 +29,23 @@ class Controller {
         //Gets info from fields
         let info = myView.getInfo();
 
-        //Creates a model object
-        let newObj = myBudget.addItem(info.type, info.desc, info.value);
+        //Checks if the properties have 'truthy values' (not null, empty string, etc.)
+        if (info.type && info.desc && info.value) {
+            //Creates a model object
+            let newObj = myBudget.addItem(info.type, info.desc, info.value);
 
-        //Adds item to page
-        myView.addListItem(newObj, info.type);
+            //Adds item to page
+            myView.addListItem(newObj, info.type);
 
-        //Updates budget
-        Controller.updateBudget();
+            //Clears input fields
+            myView.clearFields();
 
-        //Updates percentages for expenses
-        Controller.updatePercentages();
+            //Updates budget
+            Controller.updateBudget();
+
+            //Updates percentages for expenses
+            Controller.updatePercentages();
+        }
     }
 
     static updateBudget () {
@@ -66,10 +71,17 @@ class Controller {
     }
 
     static ctrlDeleteItem (type, id) {
+        //Deletes the item in model list of items
         myBudget.deleteItem(type, id);
-        myView.deleteListItem(); // ARGS?
 
-        console.log('Test - ctrlDeleteItem called');
+        //Deletes the html element
+        myView.deleteListItem(type, id);
+
+        //Updates budget
+        Controller.updateBudget();
+
+        //Updates percentages
+        Controller.updatePercentages();
     }
 
     static setupEventListeners () {
@@ -109,6 +121,11 @@ class Controller {
                 Controller.ctrlDeleteItem('expense', id);
             }
         });
+
+        //Adds eventlistener to toggle red colors in input fields, when type is changed
+        document.querySelector(DOM.inputType).addEventListener('change', function () {
+            myView.changedType();
+        });
     }
 
     static initialize () {
@@ -142,6 +159,3 @@ Controller.createTestData();
 //Temp - til at update budget, nu når jeg har testdata, så felterne ikke starter på 0
 Controller.updateBudget();
 Controller.updatePercentages();
-
-//TEMP - Skal kalde denne igen. Den bliver kaldt i initialize, men fordi jeg opretter min testData EFTER, så får de ikke added eventlisteners
-// Controller.setupEventListeners();
