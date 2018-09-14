@@ -1,5 +1,5 @@
 //ToDo:
-
+//Procent - infinity? Gør noget?
 
 class Budget {
 

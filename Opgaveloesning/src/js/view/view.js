@@ -57,21 +57,39 @@ class View {
     }
 
     clearFields () {
+        const inputBtnClassList = document.querySelector(DOMstrings.inputBtn).classList;
+        
         document.querySelector(DOMstrings.inputType).value = 'income';
         document.querySelector(DOMstrings.inputDescription).value = '';
         document.querySelector(DOMstrings.inputValue).value = '';
+
+
+        //
+        if (inputBtnClassList.contains('red')) {
+            inputBtnClassList.toggle('red');
+        }
     }
 
     displayBudget (infoObj) {      
         //Updates balance
-        document.querySelector(DOMstrings.budgetLabel).textContent = myView.formatNumber(infoObj.balance);
+        document.querySelector(DOMstrings.budgetLabel).textContent = myView.formatNumber(infoObj.balance, 'balance');
         
         //Updates Total income and Total expenses
-        document.querySelector(DOMstrings.incomeLabel).textContent = myView.formatNumber(infoObj.totalIncome);
-        document.querySelector(DOMstrings.expensesLabel).textContent = myView.formatNumber(infoObj.totalExpense);
+        document.querySelector(DOMstrings.incomeLabel).textContent = myView.formatNumber(infoObj.totalIncome, 'income');
+        document.querySelector(DOMstrings.expensesLabel).textContent = myView.formatNumber(infoObj.totalExpense, 'expense');
 
         //Updates Expenses percent label
-        document.querySelector(DOMstrings.percentageLabel).textContent = infoObj.percentage + '%';
+        //infoObj.percentage (truthy value) would return false if the number is 0, so thats why i check if its zero, to still run the code
+        if (infoObj.percentage === 0 || infoObj.percentage) {
+            if (infoObj.percentage === Infinity) {
+                //Dont know if '0%' as placeholder is the best, but its just to avoid it being 'Infinity%'
+                document.querySelector(DOMstrings.percentageLabel).textContent = '0%'; 
+            }
+            else {
+                //Adds the number and a percent sign as textContent
+                document.querySelector(DOMstrings.percentageLabel).textContent = infoObj.percentage + '%';
+            }
+        }
     }
 
     formatNumber (number, type) {
@@ -92,6 +110,16 @@ class View {
         }
         else if (type === 'expense') {
             numberString = '- ' + numberString;
+        }
+        else if (type === 'balance') {
+            if (number < 0) {
+                //Removes the minus sign, that already is in the raw data (data.balance), because it has no space between the sign and the number
+                //Adds minus and a space in front of the number
+                numberString = '- ' + numberString.split('-')[1];
+            }
+            else {
+                numberString = '+ ' + numberString;
+            }
         }
 
         return numberString;

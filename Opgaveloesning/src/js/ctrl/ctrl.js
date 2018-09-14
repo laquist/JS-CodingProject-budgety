@@ -46,6 +46,8 @@ class Controller {
             //Updates percentages for expenses
             Controller.updatePercentages();
         }
+
+        
     }
 
     static updateBudget () {
