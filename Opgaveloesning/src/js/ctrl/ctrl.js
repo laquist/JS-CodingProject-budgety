@@ -47,7 +47,7 @@ class Controller {
             Controller.updatePercentages();
         }
 
-        
+
     }
 
     static updateBudget () {
@@ -157,6 +157,8 @@ class Controller {
 
 //
 Controller.initialize();
+
+//Temp
 Controller.createTestData();
 //Temp - til at update budget, nu når jeg har testdata, så felterne ikke starter på 0
 Controller.updateBudget();
